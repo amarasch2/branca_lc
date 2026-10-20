@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Il Branco: pagamenti e documenti dei lupetti">
+    <meta name="theme-color" content="#123F2E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Il Branco">
+    <title>Il Branco</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="branco.css">
+</head>
+<body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="paw" viewBox="0 0 24 24"><ellipse cx="12" cy="16.5" rx="5.5" ry="4.5"/><ellipse cx="4.8" cy="11" rx="2.2" ry="3"/><ellipse cx="9.5" cy="6.3" rx="2.2" ry="3"/><ellipse cx="14.5" cy="6.3" rx="2.2" ry="3"/><ellipse cx="19.2" cy="11" rx="2.2" ry="3"/></symbol>
+    </svg>
+
+    <main class="page">
+        <header class="hd">
+            <h1>Buona caccia Vecchi Lupi!<br><span>Ecco il Branco Roccia della Pace</span></h1>
+            <div class="hd-actions">
+                <button class="btn btn-sun" id="openPay" type="button">+ Aggiungi pagamento</button>
+                <button class="btn btn-ghost" id="resetEventi" type="button">Azzera eventi</button>
+            </div>
+        </header>
+
+        <div class="tools">
+            <input type="search" id="search" placeholder="Chi cerchi?" aria-label="Cerca lupetto" autocomplete="off">
+        </div>
+
+        <div class="sheet">
+            <table class="lista" aria-label="Lupetti">
+                <thead>
+                    <tr><th scope="col">Lupetto</th><th scope="col" class="c-mens"><span class="th-t">Mensilità</span><span class="mesi" id="mesiHead"></span></th><th scope="col">Documenti</th><th scope="col">Pagamento eventi</th></tr>
+                </thead>
+                <tbody id="righe">
+                    <tr><td colspan="4" class="loading">Sto chiamando il Branco…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Easter egg -->
+    <dialog class="dlg" id="eggDlg" aria-label="Un messaggio per lo staff">
+        <div class="pp egg" tabindex="-1" autofocus>
+            <button class="pp-x" type="button" data-close aria-label="Chiudi">×</button>
+            <p class="egg-t">Siete lo staff migliore,<br>credo in voi.</p>
+            <p class="egg-f">— Maras</p>
+        </div>
+    </dialog>
+
+    <input type="file" id="fotoIn" accept="image/*" hidden>
+
+    <!-- Scheda del lupetto: pagamenti, documenti, eventi, PDF e WhatsApp in un posto solo -->
+    <dialog class="dlg" id="lupDlg" aria-label="Scheda lupetto"></dialog>
+
+    <!-- Aggiungi pagamento -->
+    <dialog class="dlg" id="payDlg" aria-label="Aggiungi un pagamento">
+        <form class="pp" id="payForm" tabindex="-1" autofocus>
+            <header class="pp-h"><h2>Aggiungi un pagamento</h2><button class="pp-x" type="button" data-close aria-label="Chiudi">×</button></header>
+            <div class="field"><label for="payCerca">Chi ha pagato?</label><input type="search" id="payCerca" placeholder="Cerca per nome o cognome" autocomplete="off" aria-controls="payRisultati"><ul class="risultati" id="payRisultati" aria-label="Lupetti trovati"></ul></div>
+            <div class="field"><label for="payMese">Per quale mese?</label><select id="payMese" required></select></div>
+            <div class="two">
+                <div class="field"><label for="payCanc">Cancelleria (€)</label><input type="number" id="payCanc" step="0.01" min="0" inputmode="decimal" required></div>
+                <div class="field"><label for="payVdb">VDB (€)</label><input type="number" id="payVdb" step="0.01" min="0" inputmode="decimal" required></div>
+            </div>
+            <p class="hint" id="payHint" aria-live="polite"></p>
+            <div class="pp-acts"><button class="btn btn-sun" type="submit" id="paySubmit">Salva</button><button class="btn btn-cream" type="button" data-close>Annulla</button></div>
+        </form>
+        <div class="pp" id="payDone" tabindex="-1" autofocus hidden>
+            <header class="pp-h"><h2>Fatto!</h2><button class="pp-x" type="button" data-close aria-label="Chiudi">×</button></header>
+            <p id="payDoneText"></p>
+            <div class="pp-acts"><a class="btn btn-sun" id="payWa" target="_blank" rel="noopener">Manda la conferma su WhatsApp</a><button class="btn btn-cream" type="button" data-close>Chiudi</button></div>
+        </div>
+    </dialog>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="common.js"></script>
+    <script src="firebase-init.js"></script>
+    <script src="pdf.js"></script>
+    <script src="payment-table.js"></script>
+</body>
+</html>
